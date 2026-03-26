@@ -132,6 +132,10 @@
     transition: all .3s;
   }
 
+  .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(.5); }
+  .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
   .btn-text {
     color: var(--accent);
     font-family: 'Instrument Sans', sans-serif;
@@ -2257,10 +2261,61 @@
     .nav-links.open {
       display: flex; flex-direction: column;
       position: fixed; top: calc(env(safe-area-inset-top, 0px) + 24px + 80px); left: 20px; right: 20px;
-      background: rgb(23,25,28); border-radius: 20px;
-      padding: 20px; gap: 4px; z-index: 9999;
+      background: rgba(23,25,28,.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 10px;
+      gap: 8px;
+      z-index: 9999;
+      box-shadow: 0 20px 70px rgba(0,0,0,.55);
     }
-    .nav-links.open a { padding: 12px 16px; font-size: 18px; color: #fff; }
+    .nav-links.open::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: radial-gradient(1200px 240px at 20% 0%, rgba(217,255,0,.10), transparent 50%);
+      pointer-events: none;
+    }
+    .nav-links.open a {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,.92);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.07);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .nav-links.open a::after {
+      content: "→";
+      font-size: 14px;
+      opacity: .55;
+      transform: translateX(-2px);
+      transition: transform .15s ease, opacity .15s ease;
+    }
+    .nav-links.open a:hover {
+      background: linear-gradient(180deg, rgba(217,255,0,.10), rgba(255,255,255,.03));
+      border-color: rgba(217,255,0,.22);
+      color: #fff;
+    }
+    .nav-links.open a:hover::after {
+      opacity: .9;
+      transform: translateX(0);
+    }
+    .nav-links.open a:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(217,255,0,.18);
+      border-color: rgba(217,255,0,.35);
+    }
+    .nav-links.open a:active { transform: scale(.99); }
     .hamburger { display: flex !important; }
     .btn-primary-nav { display: none !important; }
 
@@ -2462,14 +2517,16 @@
     <img class="logo-img" src="assets/navbar-logo.png" alt="United" />
     <ul class="nav-links" id="navLinks">
       <li><a href="#hero" onclick="closeMenu()">Home</a></li>
-      <li><a href="#about" onclick="closeMenu()">Sobre Nós</a></li>
+      <li><a href="#about" onclick="closeMenu()">Sobre</a></li>
+      <li><a href="#seja-visto" onclick="closeMenu()">Seja visto</a></li>
       <li><a href="#cases" onclick="closeMenu()">Cases</a></li>
+      <li><a href="#contact" onclick="closeMenu()">Contato</a></li>
     </ul>
-    <a href="https://wa.me/5521979310451" target="_blank" class="btn-primary btn-primary-nav">
+    <a href="#contact" class="btn-primary btn-primary-nav" onclick="closeMenu()">
       Fale no WhatsApp!
       <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg>
     </a>
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Abrir menu" aria-controls="navLinks" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -2498,11 +2555,11 @@
   </div>
 
   <div class="hero-cta">
-    <a href="https://wa.me/5521979310451" target="_blank" class="btn-primary">
+    <a href="#contact" class="btn-primary">
       Fale com a United
       <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg>
     </a>
-    <a href="https://wa.me/5521979310451" target="_blank" class="btn-text">Agende uma Call</a>
+    <a href="#contact" class="btn-text">Agende uma Call</a>
   </div>
 </section>
 
@@ -2679,7 +2736,7 @@
   <div style="text-align:center;padding:0 60px;margin-bottom:48px;">
     <h2 class="cases-title">Design e Branding fora do comum!</h2>
     <p class="cases-subtitle">Destaque-se em um oceano de marcas genéricas</p>
-    <a href="https://wa.me/5521979310451" target="_blank" class="btn-primary">Agendar Call <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="display:inline;vertical-align:middle;margin-left:4px;"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg></a>
+    <a href="#contact" class="btn-primary">Agendar Call <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="display:inline;vertical-align:middle;margin-left:4px;"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg></a>
   </div>
 
   <!-- Carousel -->
@@ -2959,7 +3016,7 @@
 
       <!-- Footer -->
       <div style="padding:16px;text-align:center;">
-        <a href="https://wa.me/5521979310451" target="_blank" style="font-family:'Instrument Sans',sans-serif;font-size:15px;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">E ai, bora? <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg></a>
+        <a href="#contact" style="font-family:'Instrument Sans',sans-serif;font-size:15px;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">E ai, bora? <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg></a>
       </div>
 
     </div>
@@ -2999,11 +3056,52 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 function toggleMenu() {
   const nav = document.getElementById('navLinks');
-  nav.classList.toggle('open');
+  const btn = document.getElementById('hamburger');
+  const isOpen = nav.classList.toggle('open');
+  if (btn) {
+    btn.classList.toggle('active', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+    btn.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+  }
 }
 function closeMenu() {
-  document.getElementById('navLinks').classList.remove('open');
+  const nav = document.getElementById('navLinks');
+  const btn = document.getElementById('hamburger');
+  if (nav) nav.classList.remove('open');
+  if (btn) {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'Abrir menu');
+  }
 }
+
+// Scroll confiável para âncoras internas (e fecha o menu)
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href');
+    if (!href || href === '#') return;
+    const el = document.querySelector(href);
+    if (!el) return;
+    e.preventDefault();
+    closeMenu();
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.pushState(null, '', href);
+  });
+});
+
+// Fecha menu ao clicar fora / ESC
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('navLinks');
+  const btn = document.getElementById('hamburger');
+  if (!nav || !btn) return;
+  if (!nav.classList.contains('open')) return;
+  const t = e.target;
+  if (nav.contains(t) || btn.contains(t)) return;
+  closeMenu();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMenu();
+});
 
 // Gallery carousel
 let galIndex = 0;
@@ -3061,7 +3159,7 @@ document.querySelectorAll('.tb-btn').forEach(btn => {
   </div>
 </section>
 <!-- STATS + DAVID -->
-<section style="background:var(--bg);padding:80px 80px;">
+<section id="stats" style="background:var(--bg);padding:80px 80px;">
   <div style="max-width:1100px;margin:0 auto;">
 
     <!-- Title -->
@@ -3189,14 +3287,14 @@ document.querySelectorAll('.faq2-q').forEach(q => {
 });
 </script>
 <!-- CONTACT -->
-<section style="background:var(--bg);padding:80px 80px;">
+<section id="contact" style="background:var(--bg);padding:80px 80px;scroll-margin-top:120px;">
   <div style="max-width:1100px;margin:0 auto;">
 
     <div style="text-align:center;margin-bottom:48px;">
       <p style="display:inline-flex;align-items:center;gap:8px;font-family:'Instrument Sans',sans-serif;font-size:15px;color:var(--accent);margin-bottom:16px;">
         <span style="background:var(--accent);color:#000;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">✳</span> Atendimento Exclusivo
       </p>
-      <h2 style="font-family:'Instrument Sans',sans-serif;font-size:clamp(32px,4.5vw,64px);font-weight:400;color:#888;letter-spacing:-0.04em;line-height:1.15;">Entre em <span style="color:#fff;font-weight:700;">contato e receba</span><br>um <span style="color:#fff;font-weight:700;">atendimento exclusivo!</span></h2>
+      <h2 style="font-family:'Instrument Sans',sans-serif;font-size:clamp(32px,4.5vw,64px);font-weight:400;color:#fff;letter-spacing:-0.04em;line-height:1.12;max-width:760px;margin:0 auto;">Entre em <span style="color:#fff;font-weight:700;">contato e receba</span> um <span style="color:#fff;font-weight:700;">atendimento exclusivo!</span></h2>
     </div>
 
     <div style="background:rgb(22,22,22);border-radius:24px;padding:52px 56px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
@@ -3207,7 +3305,7 @@ document.querySelectorAll('.faq2-q').forEach(q => {
           <input type="text" id="cf-name" placeholder="Seu Nome e Sobrenome" required
             style="width:100%;background:rgb(42,42,42);border:none;border-radius:10px;padding:18px 20px;font-family:'Instrument Sans',sans-serif;font-size:16px;color:#fff;outline:none;box-sizing:border-box;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <input type="tel" id="cf-phone" placeholder="WhatsApp" required
+            <input type="tel" id="cf-phone" placeholder="WhatsApp" required inputmode="numeric" autocomplete="tel" maxlength="14"
               style="background:rgb(42,42,42);border:none;border-radius:10px;padding:18px 20px;font-family:'Instrument Sans',sans-serif;font-size:16px;color:#fff;outline:none;">
             <input type="email" id="cf-email" placeholder="Email" required
               style="background:rgb(42,42,42);border:none;border-radius:10px;padding:18px 20px;font-family:'Instrument Sans',sans-serif;font-size:16px;color:#fff;outline:none;">
@@ -3233,7 +3331,7 @@ document.querySelectorAll('.faq2-q').forEach(q => {
         </div>
         <div style="margin-bottom:28px;">
           <p style="font-family:'Instrument Sans',sans-serif;font-size:18px;font-weight:600;color:#fff;margin-bottom:4px;letter-spacing:-0.02em;">WhatsApp</p>
-          <a href="https://wa.me/5521979310451" target="_blank" style="font-family:'Instrument Sans',sans-serif;font-size:16px;color:#555;text-decoration:none;">+55 21 97931-0451</a>
+          <a href="#contact" style="font-family:'Instrument Sans',sans-serif;font-size:16px;color:#555;text-decoration:none;">+55 21 97931-0451</a>
         </div>
         <div>
           <p style="font-family:'Instrument Sans',sans-serif;font-size:18px;font-weight:600;color:#fff;margin-bottom:4px;letter-spacing:-0.02em;">Email</p>
@@ -3246,6 +3344,33 @@ document.querySelectorAll('.faq2-q').forEach(q => {
 </section>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function formatBRPhone(v) {
+  const digits = (v || '').replace(/\D/g, '').slice(0, 11);
+  const ddd = digits.slice(0, 2);
+  const rest = digits.slice(2);
+  if (!digits) return '';
+  if (digits.length <= 2) return `(${ddd}`;
+  if (rest.length <= 5) return `(${ddd})${rest}`;
+  return `(${ddd})${rest.slice(0, 5)}-${rest.slice(5, 9)}`;
+}
+
+const cfPhone = document.getElementById('cf-phone');
+if (cfPhone) {
+  cfPhone.addEventListener('input', (e) => {
+    const el = e.target;
+    const start = el.selectionStart ?? el.value.length;
+    const before = el.value;
+    el.value = formatBRPhone(before);
+    // tenta manter cursor estável
+    const delta = el.value.length - before.length;
+    const next = Math.max(0, start + delta);
+    try { el.setSelectionRange(next, next); } catch {}
+  });
+  cfPhone.addEventListener('blur', (e) => {
+    e.target.value = formatBRPhone(e.target.value);
+  });
+}
+
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const name  = document.getElementById('cf-name').value;
@@ -3265,7 +3390,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     <div style="position:relative;z-index:1;">
       <h2 style="font-family:'Instrument Sans',sans-serif;font-size:clamp(28px,3.5vw,52px);font-weight:700;color:#fff;letter-spacing:-0.03em;line-height:1.2;margin-bottom:14px;">Tem uma ideia?<br>Fale com a United no WhatsApp</h2>
       <p style="font-family:'Instrument Sans',sans-serif;font-size:17px;color:#555;margin-bottom:36px;">Atendimento exclusivo para entender cada projeto!</p>
-      <a href="https://wa.me/5521979310451" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#000;font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:600;padding:14px 32px;border-radius:40px;text-decoration:none;border:1px solid rgba(255,255,255,.3);box-shadow:0 0 0 3px rgba(217,255,0,.15);">Fale com a United! ↗</a>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#000;font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:600;padding:14px 32px;border-radius:40px;text-decoration:none;border:1px solid rgba(255,255,255,.3);box-shadow:0 0 0 3px rgba(217,255,0,.15);">Fale com a United! ↗</a>
     </div>
   </div>
 </section>
@@ -3282,7 +3407,9 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:start;gap:80px;">
 
       <div>
-        <div style="font-size:28px;margin-bottom:16px;">🏴</div>
+        <div style="margin-bottom:16px;">
+          <img src="assets/footer-flag.png" alt="" aria-hidden="true" style="width:34px;height:34px;object-fit:contain;opacity:.92;filter:brightness(1.05);" />
+        </div>
         <h3 style="font-family:'Instrument Sans',sans-serif;font-size:22px;font-weight:600;color:#fff;margin-bottom:12px;letter-spacing:-0.02em;">Junte-se à United</h3>
         <p style="font-family:'Instrument Sans',sans-serif;font-size:16px;color:#555;line-height:1.6;max-width:320px;">Construímos soluções transformadoras para as melhores marcas, combinando design, tecnologia e inovação.</p>
       </div>
@@ -3290,13 +3417,13 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
       <div style="display:flex;gap:80px;">
         <div>
           <h5 style="font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:16px;">Links</h5>
-          <a href="https://instagram.com/agenciaunited" target="_blank" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:#4a9eff;text-decoration:none;margin-bottom:10px;">Instagram</a>
-          <a href="https://wa.me/5521979310451" target="_blank" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:#4a9eff;text-decoration:none;">WhatsApp</a>
+          <a href="https://instagram.com/agenciaunited" target="_blank" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:rgba(255,255,255,.92);text-decoration:none;margin-bottom:10px;">Instagram</a>
+          <a href="#contact" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:rgba(255,255,255,.92);text-decoration:none;">WhatsApp</a>
         </div>
         <div>
           <h5 style="font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:16px;">Informação</h5>
-          <a href="#faq" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:#4a9eff;text-decoration:none;margin-bottom:10px;">FAQ</a>
-          <a href="#contact" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:#4a9eff;text-decoration:none;">Contact Us</a>
+          <a href="#faq" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:rgba(255,255,255,.92);text-decoration:none;margin-bottom:10px;">FAQ</a>
+          <a href="#contact" style="display:block;font-family:'Instrument Sans',sans-serif;font-size:14px;color:rgba(255,255,255,.92);text-decoration:none;">Contact Us</a>
         </div>
       </div>
 
@@ -3305,7 +3432,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 
   <!-- Bottom bar -->
   <div style="border-top:1px solid rgba(255,255,255,.08);padding:24px 80px;display:flex;align-items:center;justify-content:space-between;max-width:100%;">
-    <p style="font-family:'Instrument Sans',sans-serif;font-size:14px;color:#555;">Feito com 🔥 Copyright © United 2025. All rights reserved.</p>
+    <p style="font-family:'Instrument Sans',sans-serif;font-size:14px;color:#555;">Copyright © United 2026. All rights reserved.</p>
     <div style="display:flex;gap:16px;">
       <a href="https://instagram.com/agenciaunited" target="_blank" style="width:32px;height:32px;border:1px solid rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
