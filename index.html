@@ -81,16 +81,22 @@
   }
 
   .nav-links a {
-    color: rgb(156,156,157);
+    color: rgba(255,255,255,.70);
     text-decoration: none;
     font-family: 'Instrument Sans', sans-serif;
     font-size: 17px;
     padding: 10px 18px;
-    border-radius: 24px;
-    transition: color .3s;
+    border-radius: 999px;
+    transition: color .2s ease, background .2s ease, border-color .2s ease;
+    border: 1px solid transparent;
+    background: transparent;
   }
 
-  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover {
+    color: #fff;
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.10);
+  }
 
   .btn-primary {
     background: linear-gradient(180deg, var(--accent) 0%, #e9ff24 100%);
@@ -259,7 +265,7 @@
     border-bottom: 1px solid rgba(255,255,255,.15);
     background: var(--bg);
     padding: 0;
-    margin-top: -85px;
+    margin-top: 0;
     overflow: hidden;
     position: relative;
   }
@@ -2339,7 +2345,7 @@
     .hero-stat p { font-size: 12px !important; line-height: 1.3 !important; text-align: center !important; }
     .hero-cta { justify-content: center !important; flex-wrap: nowrap !important; gap: 10px !important; }
     .hero-cta .btn-primary { font-size: 14px !important; padding: 10px 14px !important; white-space: nowrap !important; }
-    .hero-cta .btn-text { font-size: 14px !important; padding: 10px 8px !important; white-space: nowrap !important; }
+    .hero-cta .btn-text { display: none !important; }
 
     /* ===== LOGOS STRIP (colada ao hero) ===== */
     .logos-strip { margin-top: 16px !important; }
@@ -2556,10 +2562,10 @@
 
   <div class="hero-cta">
     <a href="#contact" class="btn-primary">
-      Fale com a United
+      AGENDAR DIAGNÓSTICO GRATUITO
       <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg>
     </a>
-    <a href="#contact" class="btn-text">Agende uma Call</a>
+    <a href="#contact" class="btn-text">Fale com a United</a>
   </div>
 </section>
 
