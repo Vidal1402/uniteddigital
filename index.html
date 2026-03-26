@@ -2245,6 +2245,31 @@
     transform: translateY(0);
   }
 
+  /* ===== HOVERS / MICRO-INTERACTIONS ===== */
+  :root { --ease-out: cubic-bezier(.2,.8,.2,1); }
+
+  .btn-primary { transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), filter .18s var(--ease-out); }
+  .btn-primary:hover { transform: translateY(-1px) scale(1.02); filter: brightness(1.02); }
+  .btn-primary:active { transform: translateY(0) scale(.99); }
+
+  .tb-card,
+  .comp-list,
+  .case-card,
+  .stats-journey-grid,
+  .faq2-item {
+    transition: transform .22s var(--ease-out), box-shadow .22s var(--ease-out), border-color .22s var(--ease-out);
+  }
+  .tb-card:hover,
+  .comp-list:hover,
+  .case-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 60px rgba(0,0,0,.45);
+  }
+  .comp-list:hover { border-color: rgba(255,255,255,.14); }
+  .comp-list.highlight:hover { border-color: rgba(217,255,0,.55); }
+
+  .faq2-item:hover { transform: translateY(-1px); }
+
   /* ===== MOBILE ===== */
   @media (max-width: 860px) {
 
@@ -3060,6 +3085,29 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Auto-add reveal to key elements (scroll effects)
+[
+  '.services-left',
+  '.service-item',
+  '#seja-visto .tb-card',
+  '.comparison-heading',
+  '.comp-card',
+  '#cases .cases-title',
+  '#cases .cases-subtitle',
+  '#cases .gal-track-wrap',
+  '.proc-row, [style*=\"Processo de entrada\"], [style*=\"Call de Briefing\"], [style*=\"Estratégia e\"], [style*=\"Posicionamento\"], [style*=\"Launch\"]',
+  '.stats-journey-grid, .stats-journey-title',
+  '.faq2-item, .faq2-q',
+  '#contact form, #contact h2, #contact [style*=\"grid-template-columns:1fr 1fr\"]'
+].forEach(sel => {
+  document.querySelectorAll(sel).forEach((el, i) => {
+    if (el.classList.contains('reveal')) return;
+    el.classList.add('reveal');
+    el.style.transitionDelay = `${Math.min(i * 60, 260)}ms`;
+    observer.observe(el);
+  });
+});
 
 function toggleMenu() {
   const nav = document.getElementById('navLinks');
